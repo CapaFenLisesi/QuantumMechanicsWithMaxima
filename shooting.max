@@ -1,0 +1,20 @@
+e: -0.7292845$
+
+f(u) := -charfun(u > 0.2 and u < 2.2)$
+derivatives: [psi2, 1.7403 * (f(u) - e) * psi1]$
+
+/*
+psi1' = psi2
+psi2' = psi1'
+*/
+
+sol: rk(derivatives, [psi1, psi2], [1, 0], [u, 0, 15, 0.001])$
+l: append(
+        reverse(makelist([-p[1],p[2]], p, sol)),
+        makelist([p[1],p[2]], p, sol))$
+plot2d([discrete, l], [xlabel,"u"], [ylabel,"psi"], [x, -15, 15], [gnuplot_term, dumb])$
+
+print(last(last(l)))$
+/*
+readline(?\*standard\-input\*);
+*/

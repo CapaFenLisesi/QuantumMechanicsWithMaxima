@@ -1,0 +1,33 @@
+S1: %h_bar/2*matrix([0, 1],[1, 0]);
+S2: %h_bar/2*matrix([0, -%i],[%i, 0]);
+S3: %h_bar/2*matrix([1, 0], [0, -1]);
+
+/* [S1, S2] */
+
+S12: S1.S2 - S2.S1;
+
+/* [S1, S3] */
+
+S13: S1.S3 - S3.S1;
+
+/* [S2, S3] */
+
+S23: S2.S3 - S3.S2;
+
+/* Quantum state */
+
+S: 1/sqrt(2)*matrix([1], [1]);
+
+/* Expectation values of operators */
+
+S.S1.S;
+
+S.S2.S;
+
+S.S3.S;
+
+
+/* Expectation values of commutators */
+S.S12.S;
+S.S13.S;
+S.S23.S;

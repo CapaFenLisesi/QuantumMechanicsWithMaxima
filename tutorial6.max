@@ -1,0 +1,22 @@
+psi(x, a, n) := sqrt(2/a)*sin(n*%pi*x/a);
+
+c(n) := integrate(psi(x, 2, n)*psi(x, 1, 1), x, 0, 1);
+
+c(2);
+
+p(n) := -sin(n*%pi/2) * 2^(5/2) / (n^2 - 4)/%pi;
+
+p(7);
+
+float(%^2);
+
+p(1)^2 + 1/2 * 4 + sum (p(i)^2 * i^2, i, 3, 1000);
+
+float(%);
+
+
+ps(x) := p(1) * psi(x, 2, 1) + 1/sqrt(2) * psi(x, 2, 2)  + sum(p(i) * psi(x, 2, i), i, 3, 100);
+
+plot2d(ps(x), [x, 0, 2]);
+
+readline(?\*standard\-input\*);

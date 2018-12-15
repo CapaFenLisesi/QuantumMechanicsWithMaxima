@@ -1,0 +1,41 @@
+/* Problem 1 */
+
+psi_minus(x) := 2*B*exp(2*x);
+psi_plus(x) := A*exp(-x);
+
+/* Find A and B */
+
+eq1: integrate(psi_minus(x)^2, x, -inf, 0) + integrate(psi_plus(x)^2, x, 0, inf) = 1;
+eq2: A = 2*B;
+sln: last(solve([eq1, eq2], [A,B])); /* positive roots */
+A: ''rhs(sln[1]);
+B: ''rhs(sln[2]);
+
+/* Find phi(k) */
+
+1/sqrt(2*%pi)*integrate(psi_plus(x)*exp(-%i*k*x), x, 0, inf) + 1/sqrt(2*%pi)*integrate(psi_minus(x)*exp(-%i*k*x), x, -inf, 0);
+phi(k) := ''%;
+phi(k);
+phi(0);
+
+/*
+phi(k) := sqrt(2)/sqrt(3*%pi)/(%i*k + 1) + sqrt(2)/sqrt(3*%pi)/(%i*k - 2);
+*/
+assume(x < 0);
+
+psi_imag(x, t) := 1/sqrt(2*%pi)*quad_qag(imagpart(phi(k)*exp(%i*k*x)*exp(-%i*t)), k, -50, 50, 0.1)[3];
+
+float(psi(-1, 0));
+
+float(psi_minus(-1));
+
+plot2d(psi(x, 1), [x, -1, 0]);
+
+/* Problem 2 */
+/*
+kill(A, B);
+
+eq: 'demoivre(A*exp(%i*k*x) + B*exp(-%i*k*x)) = C*sin(k*x) + D*cos(k*x);
+
+solve(eq, A, B);
+*/

@@ -1,0 +1,23 @@
+load(physical_constants);
+
+assume(a > 0);
+assume(%h_bar > 0);
+f(p) := 1/sqrt(2*%pi*%h_bar)*exp(%i*p*x/%h_bar);
+
+declare(n, integer);
+assume(n>0);
+n: 7;
+psi(x) := sqrt(%pi*%h_bar/a)/%i*(f(n*%pi*%h_bar/a) - f(-n*%pi*%h_bar/a));
+
+integrate(conjugate(psi(x))*psi(x), x, 0, a);
+a: 1;
+n: 1;
+plot2d(psi(x), [x, 0, a], [gnuplot_term, dumb]);
+
+%h_bar: 2;
+
+assume(a > 0);
+
+px: integrate(sqrt(2/a)*sin(n*%pi*x/a)*exp(%i*p*x/%h_bar), x, 0, a);
+
+plot2d(conjugate(px)*px, [p, -20, 20], [gnuplot_term, dumb]);

@@ -1,0 +1,54 @@
+/*
+Problem 1
+*/
+
+load(physical_constants);
+
+m: 5e-8 `kg;
+k: 2e-3 `N/m;
+x_max: 3e-9 `m;
+
+qe: %h_bar * sqrt(k/m);
+
+float(constvalue(qe)) `` J;
+
+float(%) * 6.242e18; /* eV */
+
+E: 1/2*k*x_max^2;
+
+float(constvalue(E)) `` J;
+
+E / qe - 1/2;
+
+float(constvalue(%));
+
+float(constvalue(sqrt(qe/k)));
+
+/*
+Problem 2
+*/
+
+kill(m, k);
+assume(m > 0, w > 0, %h_bar > 0);
+
+psi(x) := (2*m*w/%pi/%h_bar)^(1/4)*sqrt(4*m*w/%h_bar)*x*exp(-m*w/%h_bar*x^2);
+
+psi_0(x) := (m*w/%pi/%h_bar)^(1/4)*exp(-m*w/2/%h_bar*x^2);
+psi_1(x) := (m*w/%pi/%h_bar)^(1/4)*sqrt(2*m*w/%h_bar)*x*exp(-m*w/2/%h_bar*x^2);
+
+c_0: integrate(conjugate(psi_0(x)) * psi(x), x, -inf, inf);
+
+c_1: integrate(conjugate(psi_1(x)) * psi(x), x, -inf, inf);
+
+float(c_1^2);
+
+
+/*
+Problem 3
+*/
+
+A: sqrt(3*%h_bar/m/w);
+
+integrate(psi_1(x)*psi_1(x), x, -A, A);
+
+float(%);

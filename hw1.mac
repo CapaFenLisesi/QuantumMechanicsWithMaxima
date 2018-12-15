@@ -1,0 +1,68 @@
+/*
+
+Consider a system consisting of a ball dropped from a height
+h above the ground. Assume the ball bounces and rises back to the
+same height, and repeats this motion forever.
+
+a. Consider the two regions of equal length. If the position of the ball
+is measured at a random time, is the probability that the ball is found
+in region A greater than, less than, or equal to the probability that the
+ball is found in region B? Explain.
+
+The speed of the ball is greater inside region B during both up and down
+phases of its motion than inside region A.
+
+1/2*m*V^2 + mgy = mgh => V(y) = sqrt(2*g*(h-y))
+
+Speed peaks at y=0, and goes to zero at y = h. In other words,
+the ball spends more time inside region A; hence, the
+the probability of finding it there is greater.
+
+b. Divide region B into three equal-sized sub-regions and rank them by
+the probability that the ball is found in each sub-region. Explain.
+
+The speed of the ball gradually decreases (according to the eqn. in part a.)
+as its distance from the ground increase. Therefore, the probability of finding
+the ball in a sub-region farther from the ground is higher than in a sub-region closer to the ground.
+
+P(B0) < P(B1) < P(B2)
+
+c. Divide the entire heigh into two new regions, region 1 and region 2 such
+that the probability that the ball is found in region 1 is equal to the probability that the ball is found in region 2. Determine the length of each region. Explain.
+
+Consider the fall phase only. (A symmetrical argument applies to the bounce phase.)
+
+y(t) = h - g*t^2/2
+
+Time time it takes the ball to reach the ground (y=0) is T = sqrt(2*h/g)
+
+The boundary between regions 1 and 2 would be at t = T/2:
+
+y = h - g* (T/2)^2/2 = h - (g * 2*h/g) / 8 = h - h/4 = 3*h/4
+
+L(region 1) = 1/4*h
+L(region 2) = 3/4*h
+
+
+d. Make a qualitative graph of the probability density for this ball, p(y), versus the height, y, above the ground. Explain how you arrived at your graph.
+
+The probability density function is the integrand of
+
+int(1/T*dy/V(y), h1, h2)
+
+With V(y) and T defined in parts a. and c.,
+
+p(y) = 1/(2*sqrt(h)*1/sqrt(h-y)
+
+
+*/
+
+assume(g > 0, h > 0, H > 0, H >= h);
+eq: 1/2*m*V^2 + m*g*y = m*g*H;
+V(y) := ''(rhs(last(solve(eq, V))));
+T: integrate(1 / V(y), y, 0, H);
+rho(y) := ''(1 / T * 1 / V(y));
+integrate(rho(y), y, 0, h) = 1/2;
+solve(%, h);
+plot2d(subst([H=40], rho(y)), [y, 0, 39.8]);
+readline(?\*standard\-input\*);

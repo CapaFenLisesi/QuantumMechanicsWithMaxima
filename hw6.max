@@ -1,0 +1,39 @@
+/* Lecture HW 5 */
+set_plot_option([color, black], [style, [lines,2]])$
+
+/* Problem 1 */
+A: 1;
+n_x = 1;
+n_y = 1;
+a: 1;
+
+psi(n_x, n_y, x, y) := A*sin(n_x*%pi/2/a*(x+a)) * A*sin(n_y*%pi/2/a*(y+a));
+/*
+plot3d(psi(1, 7, x, y), [x, -a, a], [y, -a, a]);
+readline(?\*standard\-input\*);
+*/
+
+/* Problem 3 */
+kill(a);
+assume(a > 0);
+a^(-3) / 81^2 / 4 / %pi * integrate(r^6/a^4*exp(-2*r/3/a), r, 0, inf) * integrate(sin(theta)^5, theta, 0, %pi) * 2 * %pi;
+
+a: 0.529e-10;
+psi(r, theta, phi) := 4 / (80 * sqrt(30) * sqrt(a^3)) * exp(-r/3/a) * (r/a)^2 * sqrt(15/32/%pi) * sin(theta)^2 * exp(-2*%i*phi);
+
+/*psi(r, theta, phi) := 1/sqrt(%pi * a^3) * exp(-r / a);*/
+rho(r, theta, phi) := abs(psi(r, theta, phi))^2;
+
+
+plot3d (rho(sqrt(x^2 + y^2) * 0.9e-9, atan(x/y), 0), [x,-1,1], [y,-1,1],
+       [gnuplot_preamble,"set view map;set ticslevel 0.8;set isosample 100,100"],
+       [gnuplot_pm3d, true], [box, false], same_xy, [elevation,0], [azimuth,0],
+       [mesh_lines_color,false],
+       [legend, false],
+       [gnuplot_png_term_command, "set term pngcairo font \",12\"; set terminal png size 1960, 1960"],
+       [palette, [gradient, black, yellow]],
+       [grid, 350, 350]
+       /*[png_file, "./psi322_bw_inv.png"]*/
+       )$
+
+readline(?\*standard\-input\*);

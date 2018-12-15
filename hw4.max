@@ -1,0 +1,66 @@
+/* Lecture HW 4 */
+set_plot_option([color, black], [style, [lines,2]])$
+
+/* Problem 1 */
+/* Even wavefunction */
+psi1(x) := L*(1+exp(2*k*a))*exp(k*x)$
+psi2(x) := 2*L*cosh(k*x)$
+psi3(x) := L*(1+exp(2*k*a))*exp(-k*x)$
+
+psi(x):= charfun(x<-a)*psi1(x) + charfun(x>=-a and x<=a)*psi2(x)
+         + charfun(x>a)*psi3(x)$
+
+plot_wave(filename, y_min) := plot2d(subst([L=1, a=3, k=1], psi(x)), [x, -9, 9], [y, y_min, 25],
+               [png_file, filename], [label, ["x", 8.5, -(25-y_min)/50], ["ψ", 0.3, 24.5]],
+               [box, false],  grid2d, [ytics, 0, 0, 0],
+               [gnuplot_preamble, "set xtics ('-a' -3, '0' 0, 'a' 3)"])$
+plot_wave("./even.png", -2);
+
+/* Odd wavefunction */
+psi1(x) := L*(1-exp(2*k*a))*exp(k*x)$
+psi2(x) := 2*L*sinh(k*x)$
+psi3(x) := -L*(1-exp(2*k*a))*exp(-k*x)$
+plot_wave("./odd.png", -25);
+
+/* Transcendental equations */
+/* Even */
+a*k - 1 = exp(-2*k*a)$
+eq: %, k = z / (2*a)$
+z_even: find_root(eq, z, 2, 3);
+plot2d([lhs(eq), rhs(eq)], [z, 0, 2.99], [png_file, "./even_solution.png"],
+       [box, false], [legend, false], [label, ["2κa", 2.93, -0.1]])$
+/* Odd */
+1 - a*k = exp(-2*k*a)$
+eq: %, k = z / (2*a)$
+z_odd: find_root(eq, z, 1, 2);
+plot2d([lhs(eq), rhs(eq)], [z, 0, 2.99], [png_file, "./odd_solution.png"],
+       [box, false], [legend, false], [label, ["2κa", 2.93, -0.1]])$
+
+/* Energies */
+k(z) := z / (2*a)$
+E(k) := -%hbar^2 * k^2 / 2 / m$
+
+E(k(z_even));
+E(k(z_odd));
+
+/* Scattering state equations */
+eq1: A*exp(-%i*k*a) + B*exp(%i*k*a) = C*exp(-%i*k*a) + D*exp(%i*k*a)$
+eq2: C*exp(%i*k*a) + D*exp(-%i*k*a) = F*exp(%i*k*a)$
+eq3: %i*k*(C*exp(-%i*k*a) - D*exp(%i*k*a) - A*exp(-%i*k*a) + B*exp(%i*k*a)) = -q*(A*exp(-%i*k*a)+ B*exp(%i*k*a))$
+eq4: %i*k*(F*exp(%i*k*a) - C*exp(%i*k*a) + D*exp(-%i*k*a)) = -q*F*exp(%i*k*a)$
+
+slns: solve([eq1, eq2, eq3, eq4], [B, C, D, F]);
+tex(slns[1][1])$
+tex(slns[1][2])$
+tex(slns[1][3])$
+tex(slns[1][4])$
+
+expand((q^2 * cos(4*k*a) - q^2 +4*k^2)^2 + (q^2*sin(4*k*a) - 4*k*q)^2);
+
+/* Problem 2 */
+my_preamble: "set xtics ('π/2' 1.5708, 'π' 3.1415, '3π/2' 4.712, '2π' 6.283, '5π/2' 7.854)"$
+f(z, z_0) := -1/sqrt((z_0/z)^2 - 1) * sqrt(z/abs(z));
+plot2d([tan(x), f(x, %pi/2), f(x, 5), f(x, 25)],
+       [x, -1, 3.1*%pi], [y, -2, 2], [axes, x], [axes, solid], [color, black], [yx_ratio, 9/16], grid2d, [ytics, 0, 0, 0],
+       [gnuplot_png_term_command, "set term pngcairo font \",12\"; set terminal png size 960, 540"], [label, ["z", 3*%pi + 0.15, -0.2]],
+       [gnuplot_preamble, my_preamble], [png_file, "./odd_states.png"], [box, false], [legend, false]);

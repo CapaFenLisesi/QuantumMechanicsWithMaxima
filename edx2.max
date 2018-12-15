@@ -1,0 +1,15 @@
+psi(x, t) := 1/sqrt(3)*sqrt(2/a)*sin((2*pi*x)/a)*exp(-%i*4*alpha*t) + sqrt(2/3)*sqrt(2/a)*sin((3*pi*x)/a)*exp(-%i*9*alpha*t);
+
+rho(x, t) := conjugate(psi(x, t)) * psi(x, t);
+
+psi1(x, n) := sqrt(2/a) * sin(n*%pi*x/a);
+
+
+
+assume(a > 0);
+
+
+integrate(conjugate(psi(x,t)) * diff(psi(x, t), x), x, 0, a);
+
+
+integrate(sin(3*%pi*x/a) * cos(3*%pi*x/a), x, 0, a);

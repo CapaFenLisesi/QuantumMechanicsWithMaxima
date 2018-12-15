@@ -1,0 +1,21 @@
+/* Tutorial HW 5 */
+
+a: 1;
+psi(x, n) := sqrt(2/a)*sin(n*%pi*x/a);
+
+omega1: %pi/4;
+omega2: 
+plot3d(
+        [
+                [0, 0, x], [x, 0, a*1.5], [y, 0, 1],
+                [x, 0, 0], [x, -a*1.5, a*1.5], [y, 0, 1],
+                [0, x, 0], [x, -a*1.5, a*1.5], [y, 0, 1],
+                [psi(x, 1) * cos(-phi), psi(x, 1) * sin(-phi), x], [x, 0, a], [y, 0, 1],
+                [psi(x, 2) * cos(-phi), psi(x, 2) * sin(-phi), x], [x, 0, a], [y, 0, 1]
+        ],
+        [box, false]);
+readline(?\*standard\-input\*);
+
+
+
+
